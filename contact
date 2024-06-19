@@ -1,80 +1,95 @@
 import os
+
 def ajouter():
-    c= open("test.txt", "a")
-    list=[];
-    dict={};
-    print("**********")
-    print("             ajouter un cantact                    ")
-    dict["name"] = str(input(" nom:"))
-    dict["first name "] = str(input("  prenom:"))
-    dict["num"] = str(input("nmr de tlfn :"))
-    dict["adresse"] = str(input(" une adresse:"))
-    dict["adresse mail"] = str(input(" mail:"))
-    print("************")
-    c.write(str(dict))
-    c.close()
+    with open("test.txt", "a") as c:
+        contact = {}
+        print("**********")
+        print("             Ajouter un contact                    ")
+        contact["name"] = input("Nom: ")
+        contact["first name"] = input("Prenom: ")
+        contact["num"] = input("Numéro de téléphone: ")
+        contact["adresse"] = input("Adresse: ")
+        contact["email"] = input("Email: ")
+        print("************")
+        c.write(str(contact) + "\n")
 
 def modif():
-    c = open("test.txt", "r+")
-    list.readlines()
-    num=input("donner un numero")
-    if num == dict.values() :
-        print("**********************")
-        print("                   modifier un cantact              ")
-        dict["name"] = str(input(" new nom:"))
-        dict["first name "] = str(input(" new prenom:"))
-        dict["num"] = str(input(" now nmr de tlfn:"))
-        dict["adresse"] = str(input("new adresse:"))
-        dict["adresse mail"] = str(input("new mail:"))
-        print("**********************")
-        list.append(dict)
-        list.write(str(list))
-
-        c.close()
-
+    with open("test.txt", "r") as c:
+        contacts = c.readlines()
+    
+    num = input("Donner un numéro: ")
+    for i, contact_str in enumerate(contacts):
+        contact = eval(contact_str.strip())
+        if contact["num"] == num:
+            print("**********************")
+            print("                   Modifier un contact              ")
+            contact["name"] = input("Nouveau nom: ")
+            contact["first name"] = input("Nouveau prenom: ")
+            contact["num"] = input("Nouveau numéro de téléphone: ")
+            contact["adresse"] = input("Nouvelle adresse: ")
+            contact["email"] = input("Nouvel email: ")
+            print("**********************")
+            contacts[i] = str(contact) + "\n"
+            break
+    else:
+        print("Ce contact n'existe pas.")
+    
+    with open("test.txt", "w") as c:
+        c.writelines(contacts)
 
 def supr():
-    c = open("test.txt", "r+")
-    list = [];
-    dict = {};
-    num = input("donner un numero")
-    print("*****************************")
-    print("                supeimer un cantact              ")
-    if num== dict.values():
-        print(dict)
-        print("pour supprimer tapes:'s' ")
-        if input("nn")=="s":
-            os.system('cls')
-            c.write(str(list))
-        else:
-            print("cantact nom suprimer ")
+    with open("test.txt", "r") as c:
+        contacts = c.readlines()
+    
+    num = input("Donner un numéro: ")
+    for i, contact_str in enumerate(contacts):
+        contact = eval(contact_str.strip())
+        if contact["num"] == num:
+            print("*****************************")
+            print("                Supprimer un contact              ")
+            print(contact)
+            if input("Pour supprimer, tapez 's': ") == "s":
+                del contacts[i]
+                print("Contact supprimé.")
+            else:
+                print("Contact non supprimé.")
+            break
     else:
-        print("se cantact n'exicte pas ")
-    c.close()
-def writ_all():
-    c = open("test.txt", "r")
-    c=list.readlines()
-    c.close()
-    print(x)
-def write ():
-    c = open("test.txt", "r")
-    dict={}
-    c = input("donner un numero")
-    if list == dict.values():
-        print(dict)
-        c.write(str(list))
+        print("Ce contact n'existe pas.")
+    
+    with open("test.txt", "w") as c:
+        c.writelines(contacts)
+
+def write_all():
+    with open("test.txt", "r") as c:
+        contacts = c.readlines()
+    
+    for contact_str in contacts:
+        print(eval(contact_str.strip()))
+
+def write():
+    with open("test.txt", "r") as c:
+        contacts = c.readlines()
+    
+    num = input("Donner un numéro: ")
+    for contact_str in contacts:
+        contact = eval(contact_str.strip())
+        if contact["num"] == num:
+            print(contact)
+            break
     else:
-        print("se cantact n'exicte pas ")
-    c.close()
-#code principal
-print(" ##############  menu ##################  ")
-print("1.ajouter un cantact")
-print("2.modifier un cantact")
-print("3.suprimer un cantact")
-print("4.afficher tout les  cantacts")
-print("5.aficher  un cantact")
+        print("Ce contact n'existe pas.")
+
+# Code principal
+print("##############  Menu ##################")
+print("1. Ajouter un contact")
+print("2. Modifier un contact")
+print("3. Supprimer un contact")
+print("4. Afficher tous les contacts")
+print("5. Afficher un contact")
 print("###########################################")
-choice = input("votre choix :")
+choice = input("Votre choix : ")
+
 if choice == "1":
     ajouter()
 elif choice == "2":
@@ -85,3 +100,5 @@ elif choice == "4":
     write_all()
 elif choice == "5":
     write()
+else:
+    print("Choix non valide.")
